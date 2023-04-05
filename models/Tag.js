@@ -4,6 +4,7 @@ const sequelize = require('../config/connection.js');
 
 class Tag extends Model {}
 
+// Tag.init will create the tag table in the database
 Tag.init(
   {
     // define columns
@@ -26,4 +27,5 @@ Tag.init(
   }
 );
 
+// Export the Tag model for use in other files
 module.exports = Tag;

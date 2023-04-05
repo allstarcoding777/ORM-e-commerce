@@ -1,3 +1,4 @@
+// This is the ProductTag model. It will be used to create the product_tag table in the database.
 const { Model, DataTypes } = require('sequelize');
 
 const sequelize = require('../config/connection');
@@ -37,4 +38,5 @@ ProductTag.init(
   }
 );
 
+// Export the ProductTag model for use in other files
 module.exports = ProductTag;
