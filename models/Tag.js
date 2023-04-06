@@ -7,7 +7,7 @@ class Tag extends Model {}
 // Tag.init will create the tag table in the database
 Tag.init(
   {
-    // define columns
+    // define columns for the Tag model
     id: {
       type: DataTypes.INTEGER,
       allowNull: false,

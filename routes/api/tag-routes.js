@@ -28,6 +28,8 @@ const { Tag, Product, ProductTag } = require('../../models');
 // be sure to include its associated Product data
   router.get('/:id', async (req, res) => {
     try {
+      // find a single tag by its `id` value and  its associated Product data
+      // findByPk is a Sequelize method that finds a single primary key based on an id
       const tagData = await Tag.findByPk(req.params.id, {
         include: [
           {model: Product}
@@ -47,6 +49,7 @@ const { Tag, Product, ProductTag } = require('../../models');
   // create a new tag
   router.post('/', async (req, res) => {
     try {
+      // req.body is the data from the front end
       const tagData = await Tag.create(req.body);
       res.status(200).json(tagData);
     } catch (err) {
@@ -62,6 +65,7 @@ const { Tag, Product, ProductTag } = require('../../models');
           id: req.params.id,
         }
       });
+      // if there are no tags, return a 404 error with a message
       if (!tagData[0]) {
         res.status(404).json({ message: 'No tag found with that id!' });
         return;

@@ -23,6 +23,7 @@ Category.init(
         }
     },
     {
+        // pass in imported sequelize connection (the direct connection to our database)
         sequelize,
         timestamps: false,
         freezeTableName: true,

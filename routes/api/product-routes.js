@@ -3,57 +3,48 @@ const { Product, Category, Tag, ProductTag } = require('../../models');
 
 // The `/api/products` endpoint
 
-// get all products
-router.get('/', (req, res) => {
-  // be sure to include its associated Category and Tag data
-  Product.findAll({
-    include: [
-      {
-        model: Category,
-        attributes: ['id', 'category_name'],
-      },
-      {
-        model: Tag,
-        attributes: ['id', 'tag_name'],
-      }
-    ]
-  })
-  .then(productData => res.json(productData))
-  .catch(err => {
-    console.log(err);
+// route to get all products
+router.get('/', async (req, res) => {
+  // try to get all products
+  try {
+    // const productData is the result of the findAll method on the Product model, await the promise from Product.findAll()
+    const productData = await Product.findAll({
+      // include the Category and Tag models here:
+      include: [
+        {model: Category}, 
+        {model: Tag},
+      ],
+    });
+    // if there are no products, return a 404 error
+    // 200 is the default status code for a successful request
+    res.status(200).json(productData);
+  } catch (err) {
+    // 500 is the default status code for an error
     res.status(500).json(err);
-  });
+  }  
 });
 
-// get one product by its `id`
-router.get('/:id', (req, res) => {
-  // be sure to include its associated Category and Tag data
-  Product.findOne({
-    where: {
-      id: req.params.id,
-    },
-    include: [
-      {
-        model: Category,
-        attributes: ['id', 'category_name'],
-      },
-      {
-        model: Tag,
-        attributes: ['id', 'tag_name'],
-      }
-    ]
-  })
-  .then(productData => {
+// find a single product by its `id`
+// be sure to include its associated Category and Tag data
+router.get('/:id', async (req, res) => {
+  try {
+    // find one category by its `id` value and its associated Products 
+    // finByPk is a sequelize method that finds a single primary key based on the id
+    const productData = await Product.findByPk(req.params.id, {
+      include: [
+        {model: Category},
+        {model: Tag}
+      ],
+    });
+
     if (!productData) {
-      res.status(404).json({ message: 'No product found with this id' });
+      res.status(404).json({ message: 'No product found with that id!' });
       return;
     }
-    res.json(productData);
-  })
-  .catch(err => {
-    console.log(err);
+    res.status(200).json(productData);
+  } catch (err) {
     res.status(500).json(err);
-  });
+  }
 });
 
 // create new product
