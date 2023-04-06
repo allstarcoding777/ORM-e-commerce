@@ -1,19 +1,25 @@
 const router = require('express').Router();
+// { Tag, Product, ProductTag } are destructured from the models/index.js file
 const { Tag, Product, ProductTag } = require('../../models');
 
 // The `/api/tags` endpoint
 
-  // find all tags
-  // be sure to include its associated Product data
+  // route to get all tags
   router.get('/', async (req, res) => {
+    // try to get all tags
     try {
+      // const categoryData is the result of the findAll method on the Tag model, await the promise from Tag.findAll()
       const categoryData = await Tag.findAll({
+        // include the Product model here:
         include: [
           {model: Product}
         ],
       });
+      // if there are no tags, return a 404 error
+      // 200 is the default status code for a successful request
       res.status(200).json(categoryData);
     } catch (err) {
+      // 500 is the default status code for an error
       res.status(500).json(err);
     }  
   });
@@ -66,7 +72,7 @@ const { Tag, Product, ProductTag } = require('../../models');
     }
   });
 
-  // delete on tag by its `id` value
+  // delete a tag by its `id` value
   router.delete('/:id', async (req, res) => {
     try {
       const tagData = await Tag.destroy({
